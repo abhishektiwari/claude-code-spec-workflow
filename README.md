@@ -10,7 +10,7 @@
 Install and run in any project directory:
 
 ```bash
-npx @pimzino/claude-code-spec-workflow
+npx @abhishektiwari/claude-code-spec-workflow
 ```
 
 That's it! The workflow will be automatically set up in your project.
@@ -20,16 +20,16 @@ That's it! The workflow will be automatically set up in your project.
 ### NPX (Recommended)
 ```bash
 # Run once in your project directory
-npx @pimzino/claude-code-spec-workflow
+npx @abhishektiwari/claude-code-spec-workflow
 
 # Test the setup
-npx @pimzino/claude-code-spec-workflow test
+npx @abhishektiwari/claude-code-spec-workflow test
 ```
 
 ### Global Installation
 ```bash
 # Install globally
-npm install -g @pimzino/claude-code-spec-workflow
+npm install -g @abhishektiwari/claude-code-spec-workflow
 
 # Use anywhere
 claude-spec-setup
@@ -38,7 +38,7 @@ claude-spec-setup
 ### Local Installation
 ```bash
 # Install as dev dependency
-npm install --save-dev @pimzino/claude-code-spec-workflow
+npm install --save-dev @abhishektiwari/claude-code-spec-workflow
 
 # Run via package.json script
 npx claude-spec-setup
@@ -120,19 +120,19 @@ The workflow now automatically creates individual commands for each task:
 
 ```bash
 # Setup in current directory
-npx @pimzino/claude-code-spec-workflow
+npx @abhishektiwari/claude-code-spec-workflow
 
 # Setup in specific directory
-npx @pimzino/claude-code-spec-workflow --project /path/to/project
+npx @abhishektiwari/claude-code-spec-workflow --project /path/to/project
 
 # Force overwrite existing files
-npx @pimzino/claude-code-spec-workflow --force
+npx @abhishektiwari/claude-code-spec-workflow --force
 
 # Skip confirmation prompts
-npx @pimzino/claude-code-spec-workflow --yes
+npx @abhishektiwari/claude-code-spec-workflow --yes
 
 # Test the setup
-npx @pimzino/claude-code-spec-workflow test
+npx @abhishektiwari/claude-code-spec-workflow test
 ```
 
 ## 🎨 Features
@@ -195,7 +195,7 @@ The package includes a built-in test command:
 
 ```bash
 # Test setup in temporary directory
-npx @pimzino/claude-code-spec-workflow test
+npx @abhishektiwari/claude-code-spec-workflow test
 ```
 
 ## 📋 Requirements
@@ -211,13 +211,13 @@ npx @pimzino/claude-code-spec-workflow test
 **❓ Command not found after NPX**
 ```bash
 # Make sure you're using the correct package name
-npx @pimzino/claude-code-spec-workflow
+npx @abhishektiwari/claude-code-spec-workflow
 ```
 
 **❓ Setup fails with permission errors**
 ```bash
 # Try with different directory permissions
-npx @pimzino/claude-code-spec-workflow --project ~/my-project
+npx @abhishektiwari/claude-code-spec-workflow --project ~/my-project
 ```
 
 **❓ Claude Code not detected**
@@ -230,10 +230,10 @@ npm install -g @anthropic-ai/claude-code
 
 ```bash
 # Show verbose output
-DEBUG=* npx @pimzino/claude-code-spec-workflow
+DEBUG=* npx @abhishektiwari/claude-code-spec-workflow
 
 # Check package version
-npx @pimzino/claude-code-spec-workflow --version
+npx @abhishektiwari/claude-code-spec-workflow --version
 ```
 
 ## 🌟 Examples
@@ -241,7 +241,7 @@ npx @pimzino/claude-code-spec-workflow --version
 ### Basic Usage
 ```bash
 cd my-awesome-project
-npx @pimzino/claude-code-spec-workflow
+npx @abhishektiwari/claude-code-spec-workflow
 claude
 # Type: /spec-create user-dashboard "User profile management"
 ```
@@ -250,7 +250,7 @@ claude
 ```bash
 # Setup multiple projects
 for dir in project1 project2 project3; do
-  npx @pimzino/claude-code-spec-workflow --project $dir --yes
+  npx @abhishektiwari/claude-code-spec-workflow --project $dir --yes
 done
 ```
 
