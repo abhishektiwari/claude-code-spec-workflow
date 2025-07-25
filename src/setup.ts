@@ -7,20 +7,19 @@ import {
   getSpecTasksCommand,
   getSpecExecuteCommand,
   getSpecStatusCommand,
-  getSpecListCommand
+  getSpecListCommand,
+  getSpecSteeringSetupCommand
 } from './commands';
 import {
   getRequirementsTemplate,
   getDesignTemplate,
-  getTasksTemplate
+  getTasksTemplate,
+  getProductTemplate,
+  getTechTemplate,
+  getStructureTemplate
 } from './templates';
 import { getClaudeMdContent } from './claude-md';
-import {
-  getWindowsCommandGenerationScript,
-  getUnixCommandGenerationScript,
-  getOSDetectionScript,
-  getCommandGenerationInstructions
-} from './scripts';
+// Script imports removed in v1.2.5 - task command generation now uses NPX command
 
 export class SpecWorkflowSetup {
   private projectRoot: string;
@@ -28,7 +27,8 @@ export class SpecWorkflowSetup {
   private commandsDir: string;
   private specsDir: string;
   private templatesDir: string;
-  private scriptsDir: string;
+  // scriptsDir removed in v1.2.5 - no longer creating scripts
+  private steeringDir: string;
 
   constructor(projectRoot: string = process.cwd()) {
     this.projectRoot = projectRoot;
@@ -36,7 +36,8 @@ export class SpecWorkflowSetup {
     this.commandsDir = join(this.claudeDir, 'commands');
     this.specsDir = join(this.claudeDir, 'specs');
     this.templatesDir = join(this.claudeDir, 'templates');
-    this.scriptsDir = join(this.claudeDir, 'scripts');
+    // scriptsDir initialization removed in v1.2.5
+    this.steeringDir = join(this.claudeDir, 'steering');
   }
 
   async claudeDirectoryExists(): Promise<boolean> {
@@ -54,7 +55,8 @@ export class SpecWorkflowSetup {
       this.commandsDir,
       this.specsDir,
       this.templatesDir,
-      this.scriptsDir
+      // scriptsDir removed from directory creation
+      this.steeringDir
     ];
 
     for (const dir of directories) {
@@ -70,7 +72,8 @@ export class SpecWorkflowSetup {
       'spec-tasks': getSpecTasksCommand(),
       'spec-execute': getSpecExecuteCommand(),
       'spec-status': getSpecStatusCommand(),
-      'spec-list': getSpecListCommand()
+      'spec-list': getSpecListCommand(),
+      'spec-steering-setup': getSpecSteeringSetupCommand()
     };
 
     for (const [commandName, commandContent] of Object.entries(commands)) {
@@ -92,29 +95,7 @@ export class SpecWorkflowSetup {
     }
   }
 
-  async createScripts(): Promise<void> {
-    const scripts = {
-      'generate-commands.bat': getWindowsCommandGenerationScript(),
-      'generate-commands.sh': getUnixCommandGenerationScript(),
-      'generate-commands-launcher.sh': getOSDetectionScript(),
-      'README.md': getCommandGenerationInstructions()
-    };
-
-    for (const [scriptName, scriptContent] of Object.entries(scripts)) {
-      const scriptFile = join(this.scriptsDir, scriptName);
-      await fs.writeFile(scriptFile, scriptContent, 'utf-8');
-
-      // Make shell scripts executable on Unix-like systems
-      if (scriptName.endsWith('.sh')) {
-        try {
-          await fs.chmod(scriptFile, 0o755);
-        } catch (error) {
-          // Ignore chmod errors on Windows
-          console.warn(`Warning: Could not set execute permissions for ${scriptName}`);
-        }
-      }
-    }
-  }
+  // NOTE: Script creation removed in v1.2.5 - task command generation now uses NPX command
 
   async createConfigFile(): Promise<void> {
     const config = {
@@ -187,7 +168,7 @@ export class SpecWorkflowSetup {
     await this.setupDirectories();
     await this.createSlashCommands();
     await this.createTemplates();
-    await this.createScripts();
+    // Script creation removed in v1.2.5 - using NPX command instead
     await this.createConfigFile();
     await this.createClaudeMd();
   }

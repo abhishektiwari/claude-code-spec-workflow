@@ -5,6 +5,88 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.5] - 2025-07-24
+
+### Changed
+- **Replaced Script-Based Task Command Generation**: Removed finicky platform-specific scripts (`.bat`, `.sh`, launcher) in favor of clean NPX command
+  - New approach: `npx @pimzino/claude-code-spec-workflow@latest generate-task-commands {spec-name}`
+  - Added user choice: Agent now asks "Would you like me to generate individual task commands? (yes/no)"
+  - Cross-platform compatibility: Works automatically on Windows, macOS, and Linux
+  - Cleaner workflow: No more script maintenance or platform detection issues
+
+### Added
+- **New CLI Command**: Added `generate-task-commands` command to the package CLI
+- **Task Parsing Logic**: Implemented robust task parsing that correctly handles the template format
+- **User-Friendly Approach**: Optional task command generation based on user preference
+
+### Technical Details
+- Added `src/task-generator.ts` with parsing and generation logic
+- Updated `src/cli.ts` with new `generate-task-commands` command
+- Updated `src/claude-md.ts` workflow instructions to use NPX approach
+- Updated `src/commands.ts` slash command definitions to use new workflow
+- Maintains backward compatibility with traditional `/spec-execute` approach
+
+## [1.2.4] - 2025-07-22
+
+### Added
+- **Steering Documents Feature**: Integrated persistent project context inspired by Kiro's steering concept
+  - New `/spec-steering-setup` command to create and manage steering documents
+  - Three steering document templates: `product.md`, `tech.md`, and `structure.md`
+  - Steering document loader utility for seamless integration
+  - New `.claude/steering/` directory for persistent project context
+  - All spec commands now reference and utilize steering documents when available
+
+### Enhanced
+- **Language-Agnostic Templates**: Refactored all templates to be truly language and project-type agnostic
+  - Removed TypeScript-specific syntax from design templates
+  - Made tech template generic for all project types (CLI tools, desktop apps, libraries, etc.)
+  - Updated structure template with flexible examples instead of web-centric assumptions
+  - Templates now work for any programming language or project type
+
+### Technical Details
+- Added `src/steering.ts` with `SteeringLoader` class for document management
+- Updated all command functions to reference steering documents
+  - `/spec-create` loads and aligns with product vision
+  - `/spec-requirements` references product.md for alignment
+  - `/spec-design` follows tech.md and structure.md patterns
+  - `/spec-tasks` respects structure.md conventions
+  - `/spec-execute` implements following all steering guidelines
+- Added comprehensive test coverage for steering features
+- Fixed template string escaping issues in `claude-md.ts`
+- All 35 tests passing including new steering and template tests
+
+## [1.2.3] - 2025-07-22
+
+### Added
+- **Code Reuse First Approach**: Enhanced workflow to prioritize analyzing existing codebase and leveraging existing components
+  - Added mandatory codebase exploration step in `/spec-create` command before writing requirements
+  - Enhanced `/spec-design` command with specific codebase research phase and "Code Reuse Analysis" section
+  - Improved `/spec-tasks` command to prioritize extending/adapting existing code over building from scratch
+  - New `_Leverage:` format in task definitions to reference specific existing code alongside `_Requirements:`
+  - Updated core principles in CLAUDE.md template to include "Code Reuse First"
+
+### Enhanced
+- **Command Generation Scripts**: Updated both Windows (.bat) and Unix (.sh) scripts to parse and include `_Leverage:` information
+  - Generated task commands now include "Code Reuse" sections when leverage information is present
+  - Enhanced command templates emphasize using existing components and utilities
+  - Improved task execution guidance to prioritize leveraging existing code
+
+## [1.2.2] - 2025-07-20
+
+### Fixed
+- **ESM Compatibility Issue**: Fixed `ERR_REQUIRE_ESM` error when running `npx @pimzino/claude-code-spec-workflow`
+  - Downgraded `chalk` from `^5.3.0` to `^4.1.2` (last CommonJS-compatible version)
+  - Downgraded `inquirer` from `^9.2.12` to `^8.2.6` (last CommonJS-compatible version)
+  - Downgraded `ora` from `^7.0.1` to `^5.4.1` (last CommonJS-compatible version)
+  - Updated `@types/inquirer` to match inquirer version `^8.2.10`
+  - This resolves the common installation error users were experiencing
+
+### Added
+- **Restart Notification**: Added prominent notifications in command generation scripts to inform users they need to restart Claude Code for new task commands to be visible
+  - Updated both Windows (`generate-commands.bat`) and Unix (`generate-commands.sh`) scripts
+  - Added restart instructions to workflow documentation and agent guidance
+  - Ensures users know to restart Claude Code after task command generation
+
 ## [1.2.1] - 2025-07-19
 
 ### Fixed
